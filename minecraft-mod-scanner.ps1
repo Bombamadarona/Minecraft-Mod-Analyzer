@@ -114,9 +114,9 @@ if ($null -ne $PSScriptRoot -and $PSScriptRoot -ne '') {
 $logFile = Join-Path -Path $basePath -ChildPath ("scan_results_{0}.txt" -f (Get-Date -Format "yyyyMMdd_HHmmss"))
 
 Write-Host ""
-Write-Host "-" + ("═" * 58) + "-" -ForegroundColor Cyan
+Write-Host "-" + ("=" * 58) + "-" -ForegroundColor Cyan
 Write-Host "|              MINECRAFT MOD SCANNER - Avvio Analisi             |" -ForegroundColor Cyan
-Write-Host "-" + ("═" * 58) + "-" -ForegroundColor Cyan
+Write-Host "-" + ("=" * 58) + "-" -ForegroundColor Cyan
 Write-Host ""
 
 function Log-Write-Header($text) {
@@ -210,8 +210,8 @@ foreach ($mcRoot in $possibleMcRoots) {
 }
 
 Write-Host ""
-Write-Host "-" + ("═" * 58) + "-" -ForegroundColor Cyan
+Write-Host "-" + ("=" * 58) + "-" -ForegroundColor Cyan
 Write-Host "|                       ANALISI COMPLETATA                       |" -ForegroundColor Cyan
-Write-Host "-" + ("═" * 58) + "-" -ForegroundColor Cyan
+Write-Host "-" + ("=" * 58) + "-" -ForegroundColor Cyan
 Write-Host ""
 Log-Write "Risultati salvati in: $logFile" 'Green'
