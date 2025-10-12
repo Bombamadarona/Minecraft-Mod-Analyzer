@@ -64,7 +64,7 @@ function Analyze-Mod-Content($modPath) {
             }
         }
 
-        $suspiciousVars = @("cheat", "hack", "xray", "inject", "aimbot", "killaura", "bypass", "ghost", "triggerbot")
+        $suspiciousVars = @("cheat", "hack", "xray", "inject", "aimbot", "killaura", "bypass", "ghost", "triggerbot", "reach", "aimbot", "killaura", "autototem", "scaffold", "self-destruct")
 
         foreach ($classFile in $classFiles) {
             try {
