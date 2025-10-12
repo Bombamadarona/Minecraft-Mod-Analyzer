@@ -162,7 +162,7 @@ if ($modFiles.Count -eq 0) {
             } elseif ($isContentSuspicious) {
                 Log-Write ">> MOD SOSPETTA (contenuto): $($mod.FullName)" 'Yellow'
             } else {
-                Log-Write "Mod OK: $($mod.FullName)" 'Gray'
+                Log-Write "MOD SAFE: $($mod.FullName)" 'Gray'
             }
 
             if ($isContentSuspicious -and $classesSuspette.Count -gt 0) {
