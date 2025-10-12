@@ -111,7 +111,8 @@ if ($null -ne $PSScriptRoot -and $PSScriptRoot -ne '') {
 } else {
     $basePath = (Get-Location).Path
 }
-$logFile = Join-Path -Path $basePath -ChildPath ("scan_results_{0}.txt" -f (Get-Date -Format "yyyyMMdd_HHmmss"))
+
+$logFile = Join-Path -Path $basePath -ChildPath ("Risultati-scan_{0}.txt" -f (Get-Date -Format "yyyyMMdd_HHmmss"))
 
 Write-Host ""
 Write-Host "-" + ("=" * 58) + "-" -ForegroundColor Cyan
