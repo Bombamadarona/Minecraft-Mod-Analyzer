@@ -15,6 +15,7 @@ Questo script è stato realizzato dal server discord SS LEARN IT (https://discor
 
 ## 📂 File e processi analizzati
 
+- `.minecraft`
 - `mods`
 - `Javaw.exe`
 
