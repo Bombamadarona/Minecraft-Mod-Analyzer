@@ -1,12 +1,13 @@
 # 🔍 Minecraft-Mod-Scanner
 
-Questo script PowerShell è pensato per analizzare le mod di Minecraft presenti nella cartella mods e per rilevare eventuali mod sospette basandosi su nomi di file e contenuti interni delle classi Java.
+Questo script PowerShell è pensato per analizzare le mod di Minecraft presenti in varie directory in base al client utilizzato e per rilevare eventuali mod sospette basandosi su nomi di file e contenuti interni delle classi Java.
 
 Questo script è stato realizzato dal server discord SS LEARN IT (https://discord.gg/UET6TdxFUk).
 
 ## 🔍 Funzionalità
 
 - Scansione dei processi Minecraft in esecuzione.
+- Insersci la directory da controllare
 - Analisi automatica delle mod presenti nella cartella mods.
 - Segnalazione delle mod sospette.
 - Elenco dettagliato delle classi sospette trovate in ogni mod.
@@ -15,7 +16,7 @@ Questo script è stato realizzato dal server discord SS LEARN IT (https://discor
 
 ## 📂 File e processi analizzati
 
-- `.minecraft`
+- Directory inserite
 - `mods`
 - `Javaw.exe`
 
