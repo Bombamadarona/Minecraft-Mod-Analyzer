@@ -115,7 +115,7 @@ $logFile = Join-Path -Path $basePath -ChildPath ("scan_results_{0}.txt" -f (Get-
 
 Write-Host ""
 Write-Host "╔" + ("═" * 58) + "╗" -ForegroundColor Cyan
-Write-Host "║                 MINECRAFT MOD SCANNER - Avvio Analisi          ║" -ForegroundColor Cyan
+Write-Host "║              MINECRAFT MOD SCANNER - Avvio Analisi             ║" -ForegroundColor Cyan
 Write-Host "╚" + ("═" * 58) + "╝" -ForegroundColor Cyan
 Write-Host ""
 
