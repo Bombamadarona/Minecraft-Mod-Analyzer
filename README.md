@@ -1,4 +1,4 @@
-# 🔍 Minecraft-Mod-Scanner
+# 🔍 Minecraft Mod Analyzer (PowerShell)
 
 Questo script PowerShell è pensato per analizzare le mod di Minecraft presenti in varie directory in base al client utilizzato e per rilevare eventuali mod sospette basandosi su nomi di file e contenuti interni delle classi Java.
 
