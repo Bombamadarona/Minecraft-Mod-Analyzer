@@ -1,4 +1,3 @@
-
 Write-Output "@@@@@@    @@@@@@      @@@       @@@@@@@@   @@@@@@   @@@@@@@   @@@  @@@     @@@  @@@@@@@  "
 Write-Output "@@@@@@@   @@@@@@@      @@@       @@@@@@@@  @@@@@@@@  @@@@@@@@  @@@@ @@@     @@@  @@@@@@@  "
 Write-Output "!@@       !@@          @@!       @@!       @@!  @@@  @@!  @@@  @@!@!@@@     @@!    @@!    "
@@ -7,12 +6,11 @@ Write-Output "!!@@!!    !!@@!!       @!!       @!!!:!    @!@!@!@!  @!@!!@!   @!@
 Write-Output " !!@!!!    !!@!!!      !!!       !!!!!:    !!!@!!!!  !!@!@!    !@!  !!!     !!!    !!!    "
 Write-Output "     !:!       !:!     !!:       !!:       !!:  !!!  !!: :!!   !!:  !!!     !!:    !!:    "
 Write-Output "    !:!       !:!       :!:      :!:       :!:  !:!  :!:  !:!  :!:  !:!     :!:    :!:    "
-Write-Output ":::: ::   :::: ::       :: ::::   :: ::::  ::   :::  ::   :::   ::   ::      ::     ::  "  
-Write-Output ":: : :    :: : :       : :: : :  : :: ::    :   : :   :   : :  ::    :      :       :"    
+Write-Output ":::: ::   :::: ::       :: ::::   :: ::::  ::   :::  ::   :::   ::   ::      ::     ::  "
+Write-Output ":: : :    :: : :       : :: : :  : :: ::    :   : :   :   : :  ::    :      :       :"
 Write-Output ""
 Write-Output "https://discord.gg/UET6TdxFUk"
-Write-Output "" 
-
+Write-Output ""
 
 function Write-Color([string]$Text, [ConsoleColor]$Color = 'White') {
     $currentColor = $Host.UI.RawUI.ForegroundColor
@@ -64,7 +62,7 @@ function Analyze-Mod-Content($modPath) {
             }
         }
 
-        $suspiciousVars = @("cheat", "hack", "xray", "inject", "aimbot", "killaura", "bypass", "ghost", "triggerbot", "reach", "aimbot", "killaura", "autototem", "scaffold", "self-destruct")
+        $suspiciousVars = @("cheat", "hack", "xray", "inject", "aimbot", "killaura", "bypass", "ghost", "triggerbot", "reach", "autototem", "scaffold", "self-destruct")
 
         foreach ($classFile in $classFiles) {
             try {
@@ -126,85 +124,52 @@ function Log-Write-Header($text) {
     Write-Separator
 }
 
-Log-Write-Header "Controllo processi Minecraft (javaw.exe)..."
+Log-Write-Header "Analisi manuale cartella mods"
 
-$mcProcs = Get-Process javaw -ErrorAction SilentlyContinue
-if (-not $mcProcs) {
-    Log-Write "Minecraft non risulta in esecuzione (javaw.exe non trovato)." 'Yellow'
-} else {
-    foreach ($proc in $mcProcs) {
-        Log-Write "Analisi del processo Minecraft (PID: $($proc.Id))" 'Green'
-        try {
-            $modules = $proc.Modules
-        } catch {
-            Write-Warning "Impossibile accedere ai moduli DLL del processo. Avvia PowerShell come amministratore."
-            continue
-        }
-        $dllSegnalate = @{}
-        foreach ($mod in $modules) {
-            $filePath = $mod.FileName
-            if (Is-SuspiciousFile $filePath -and -not $dllSegnalate.ContainsKey($filePath)) {
-                Log-Write ">> FILE SOSPETTO TROVATO: $filePath" 'Red'
-                $dllSegnalate[$filePath] = $true
-            }
-        }
-    }
+$customModsPath = Read-Host "Inserisci il percorso completo della cartella mods da analizzare (es. C:\Users\utente\Desktop\mods)"
+
+if (-not (Test-Path $customModsPath)) {
+    Log-Write "La directory specificata non esiste: $customModsPath" 'Red'
+    exit
 }
 
-Log-Write-Header "Analisi cartelle mods..."
-
-$possibleMcRoots = @(
-    "$env:APPDATA\.minecraft",
-    "$env:USERPROFILE\AppData\Roaming\.minecraft"
-) | Select-Object -Unique
+Log-Write "Analisi della cartella: $customModsPath" 'Green'
 
 $modSegnalate = @{}
-$loaderSegnalati = @{}
 
-foreach ($mcRoot in $possibleMcRoots) {
-    if (Test-Path "$mcRoot\mods") {
-        Log-Write "Trovata cartella mods: $mcRoot\mods" 'Green'
-        $modFiles = Get-ChildItem "$mcRoot\mods" -Recurse -File -Include *.jar,*.zip -ErrorAction SilentlyContinue
-        foreach ($mod in $modFiles) {
-            if (-not $modSegnalate.ContainsKey($mod.FullName)) {
-                $modSegnalate[$mod.FullName] = $true
+$modFiles = Get-ChildItem $customModsPath -Recurse -File -Include *.jar,*.zip -ErrorAction SilentlyContinue
 
-                $isNameSuspicious = Is-SuspiciousFile $mod.FullName
-                $analysis = Analyze-Mod-Content $mod.FullName
-                if ($analysis -eq $null) {
-                    continue
-                }
+if ($modFiles.Count -eq 0) {
+    Log-Write "Nessuna mod (.jar o .zip) trovata nella directory." 'Yellow'
+} else {
+    foreach ($mod in $modFiles) {
+        if (-not $modSegnalate.ContainsKey($mod.FullName)) {
+            $modSegnalate[$mod.FullName] = $true
 
-                $isContentSuspicious = $analysis.Suspicious
-                $classesSuspette = $analysis.Classes
-
-                if ($isNameSuspicious -and $isContentSuspicious) {
-                    Log-Write ">> MOD SOSPETTA (nome + contenuto): $($mod.FullName)" 'Red'
-                } elseif ($isNameSuspicious) {
-                    Log-Write ">> MOD SOSPETTA (nome): $($mod.FullName)" 'Yellow'
-                } elseif ($isContentSuspicious) {
-                    Log-Write ">> MOD SOSPETTA (contenuto): $($mod.FullName)" 'Yellow'
-                } else {
-                    Log-Write "Mod OK: $($mod.FullName)" 'Gray'
-                }
-
-                if ($isContentSuspicious -and $classesSuspette.Count -gt 0) {
-                    Log-Write ">>> Classi sospette trovate nella mod:" 'Red'
-                    foreach ($detail in $classesSuspette) {
-                        Log-Write ("     • {0} (trovato: {1})" -f $detail.Class, ($detail.Keywords -join ", ")) 'Red'
-                    }
-                }
+            $isNameSuspicious = Is-SuspiciousFile $mod.FullName
+            $analysis = Analyze-Mod-Content $mod.FullName
+            if ($analysis -eq $null) {
+                continue
             }
-        }
-    }
 
-    if (Test-Path "$mcRoot\versions") {
-        $versions = Get-ChildItem "$mcRoot\versions" -Directory -ErrorAction SilentlyContinue
-        foreach ($ver in $versions) {
-            $verName = $ver.Name
-            if ($verName -imatch "forge|fabric|quilt|lunar|badlion" -and -not $loaderSegnalati.ContainsKey($verName)) {
-                Log-Write "Trovato mod loader: $verName" 'Cyan'
-                $loaderSegnalati[$verName] = $true
+            $isContentSuspicious = $analysis.Suspicious
+            $classesSuspette = $analysis.Classes
+
+            if ($isNameSuspicious -and $isContentSuspicious) {
+                Log-Write ">> MOD SOSPETTA (nome + contenuto): $($mod.FullName)" 'Red'
+            } elseif ($isNameSuspicious) {
+                Log-Write ">> MOD SOSPETTA (nome): $($mod.FullName)" 'Yellow'
+            } elseif ($isContentSuspicious) {
+                Log-Write ">> MOD SOSPETTA (contenuto): $($mod.FullName)" 'Yellow'
+            } else {
+                Log-Write "Mod OK: $($mod.FullName)" 'Gray'
+            }
+
+            if ($isContentSuspicious -and $classesSuspette.Count -gt 0) {
+                Log-Write ">>> Classi sospette trovate nella mod:" 'Red'
+                foreach ($detail in $classesSuspette) {
+                    Log-Write ("     • {0} (trovato: {1})" -f $detail.Class, ($detail.Keywords -join ", ")) 'Red'
+                }
             }
         }
     }
@@ -215,4 +180,5 @@ Write-Host "-" + ("=" * 58) + "-" -ForegroundColor Cyan
 Write-Host "|                       ANALISI COMPLETATA                       |" -ForegroundColor Cyan
 Write-Host "-" + ("=" * 58) + "-" -ForegroundColor Cyan
 Write-Host ""
+
 Log-Write "Risultati salvati in: $logFile" 'Green'
