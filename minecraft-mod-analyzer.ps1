@@ -126,7 +126,7 @@ function Log-Write-Header($text) {
 
 Log-Write-Header "Analisi manuale cartella mods"
 
-$customModsPath = Read-Host "Inserisci il percorso completo della cartella mods da analizzare (es. C:\Users\utente\Desktop\mods)"
+$customModsPath = Read-Host "Inserisci la directory della cartella (es. C:\Users\utente\Desktop\mods): "
 
 if (-not (Test-Path $customModsPath)) {
     Log-Write "La directory specificata non esiste: $customModsPath" 'Red'
