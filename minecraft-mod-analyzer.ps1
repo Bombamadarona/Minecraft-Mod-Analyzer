@@ -33,7 +33,7 @@ function Write-Separator() {
 
 function Is-SuspiciousFile($filePath) {
     $suspiciousKeywords = @(
-        "cheat", "inject", "hack", "xray", "ghost", "wurst", "meteor", "liquidbounce", "impact", "future"
+        "cheat", "inject", "hack", "xray", "ghost", "wurst", "meteor", "liquidbounce", "impact", "future", "combat", "clicker", "op"
     )
     foreach ($keyword in $suspiciousKeywords) {
         if ($filePath -imatch $keyword) {
@@ -62,7 +62,7 @@ function Analyze-Mod-Content($modPath) {
             }
         }
 
-        $suspiciousVars = @("cheat", "hack", "xray", "inject", "aimbot", "killaura", "bypass", "ghost", "triggerbot", "reach", "autototem", "scaffold", "self-destruct")
+        $suspiciousVars = @("cheat", "hack", "xray", "inject", "aimbot", "killaura", "bypass", "esp", "autoarmor.class", "aura", "hitbox", "ghost", "triggerbot", "combat", "cps", "autoclicker", "fly", "reach", "autototem", "scaffold", "self-destruct")
 
         foreach ($classFile in $classFiles) {
             try {
