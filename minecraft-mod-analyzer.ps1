@@ -71,7 +71,7 @@ function Analyze-Mod-Content($modPath) {
         }
 
         $keywords = @(
-            "cheat","hack","xray","inject","aimbot","killaura","bypass","esp",
+            "cheat","hack","xray","inject","aimbot","killaura","bypass","speed",
             "autoarmor","aura","hitbox","ghost","triggerbot","combat","cps",
             "autoclicker","fly","reach","autototem","scaffold","self-destruct"
         )
