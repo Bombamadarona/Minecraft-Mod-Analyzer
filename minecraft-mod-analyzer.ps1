@@ -176,10 +176,9 @@ else {
 }
 
 
-
 Write-Host ""
 Write-Host ("-" + ("=" * 58) + "-") -ForegroundColor Cyan
-Write-Host "|                       ANALISI COMPLETATA                       |" -ForegroundColor Cyan
+Write-Host "|                    ANALISI COMPLETATA                    |" -ForegroundColor Cyan
 Write-Host ("-" + ("=" * 58) + "-") -ForegroundColor Cyan
 Write-Host ""
 
