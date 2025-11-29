@@ -13,12 +13,10 @@ Write-Host ""
 Write-Host "Discord: https://discord.gg/UET6TdxFUk"
 Write-Host ""
 
-#logs 
 
 $logFile = "$env:USERPROFILE\Desktop\ModAnalyzerResults.txt"
 Clear-Content $logFile -ErrorAction SilentlyContinue
 
-# Colori e Logs
 
 function Write-Color($Text, [ConsoleColor]$Color = 'White') {
     Write-Host $Text -ForegroundColor $Color
@@ -41,7 +39,6 @@ function Log-Write-Header($text) {
     Write-Separator
 }
 
-# Filtro nomi sospetti
 
 function Is-SuspiciousFile($filePath) {
     $suspiciousKeywords = @(
@@ -55,7 +52,6 @@ function Is-SuspiciousFile($filePath) {
     return $false
 }
 
-# Analizi .jar 
 
 function Analyze-Mod-Content($modPath) {
 
@@ -118,7 +114,6 @@ function Analyze-Mod-Content($modPath) {
     }
 }
 
-# Log path
 
 $basePath = $PSScriptRoot
 if (!$basePath) { $basePath = (Get-Location).Path }
@@ -129,7 +124,6 @@ Write-Host "|            MINECRAFT MOD SCANNER - Avvio Analisi         |" -Foreg
 Write-Host ("-" + ("=" * 58) + "-") -ForegroundColor Cyan
 Write-Host ""
 
-# Input directory
 
 Log-Write-Header "Analisi manuale cartella mods"
 
@@ -142,7 +136,6 @@ if (!(Test-Path $customModsPath)) {
 
 Log-Write "Analisi della cartella: $customModsPath" 'Green'
 
-# Scan
 
 $modSegnalate = @{}
 $modFiles = Get-ChildItem $customModsPath -Recurse -File -Include *.jar, *.zip -ErrorAction SilentlyContinue
@@ -182,7 +175,7 @@ else {
     }
 }
 
-# Fine
+
 
 Write-Host ""
 Write-Host ("-" + ("=" * 58) + "-") -ForegroundColor Cyan
