@@ -13,6 +13,11 @@ Write-Host ""
 Write-Host "Discord: https://discord.gg/UET6TdxFUk"
 Write-Host ""
 
+#logs 
+
+$logFile = "$env:USERPROFILE\Desktop\ModAnalyzerResults.txt"
+Clear-Content $logFile -ErrorAction SilentlyContinue
+
 # Colori e Logs
 
 function Write-Color($Text, [ConsoleColor]$Color = 'White') {
@@ -118,8 +123,6 @@ function Analyze-Mod-Content($modPath) {
 $basePath = $PSScriptRoot
 if (!$basePath) { $basePath = (Get-Location).Path }
 
-$logFile = Join-Path $basePath ("Risultati-scan_{0}.txt" -f (Get-Date -Format "yyyyMMdd_HHmmss"))
-
 Write-Host ""
 Write-Host ("-" + ("=" * 58) + "-") -ForegroundColor Cyan
 Write-Host "|            MINECRAFT MOD SCANNER - Avvio Analisi         |" -ForegroundColor Cyan
@@ -188,3 +191,4 @@ Write-Host ("-" + ("=" * 58) + "-") -ForegroundColor Cyan
 Write-Host ""
 
 Log-Write "Risultati salvati in: $logFile" 'Green'
+Write-Host ""
